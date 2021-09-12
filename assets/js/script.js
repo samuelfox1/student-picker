@@ -38,6 +38,10 @@ const originalList = [
     "Zachary Elliott",
     "Zaymon Gonzalez",
 ]
+const eraseButton = document.getElementById('erase-board')
+const eraseModal = document.getElementById('erase-board-modal')
+const eraseConfirm = document.getElementById('erase-confirm')
+const eraseDeny = document.getElementById('erase-deny')
 
 const previouslySelectedOl = document.querySelector('#previously-selected ol')
 const nameContainer = document.getElementById('name-container')
@@ -47,6 +51,11 @@ const chalkBox = document.getElementById('chalk-box')
 let processingNextStudent = false
 let idx = 0
 
+
+const toggleModalDisplay = () => {
+    eraseModal.classList.toggle('hidden')
+    nameContainer.classList.toggle('hidden')
+}
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
 const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
@@ -92,7 +101,7 @@ const removeClassFadeIn = (element) => element.classList.remove('fade-in')
 
 const setTextContent = (element, text) => element.textContent = text
 
-const hideCurrentName = () => {
+const eraseCurrentName = () => {
     nameContainer.classList.add('fade-out')
 
     setTimeout(() => {
@@ -122,7 +131,7 @@ const handleDisplayChosenStudent = (student) => {
     const _student = student
 
     if (p1.textContent) {
-        hideCurrentName()
+        eraseCurrentName()
         setTimeout(() => displayNewName(_student), 1000)
         return
     }
@@ -170,11 +179,22 @@ const pickRandomStudent = () => {
     updateRemainingStudentsArr(chosenStudent, students)
 }
 
+
+const clearLocalStorage = () => {
+    localStorage.removeItem('remainginStudentsList')
+    resetPreviousStudents()
+    toggleModalDisplay()
+    eraseCurrentName()
+}
+
 const init = () => {
     buildPreviousStudentsList()
     setTimeout(() => chalkBox.classList.remove('hidden'), 1000)
 }
 
-chalkBox.addEventListener('click', pickRandomStudent)
 
+chalkBox.addEventListener('click', pickRandomStudent)
+eraseButton.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
+eraseDeny.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
+eraseConfirm.addEventListener('click', clearLocalStorage)
 init()
