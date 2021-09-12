@@ -1,13 +1,14 @@
 :root {
     --grey:rgba(128, 128, 128, 0.507);
     --lighter-grey: rgba(128, 128, 128, 0.301);
+    --chalkWhite: rgba(255, 255, 255, 0.582);
 }
 
 
 body {
     background-image: url('../images/chalkboard.jpeg');
     height: 100vh;
-    background-position: center;
+    background-position: right;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.233);
@@ -37,7 +38,7 @@ button {
 button:hover {
     cursor: pointer;
     font-size: 3.1em;
-    color: black;
+    color: var(--chalkWhite);
     border: 1px solid black;
 
     box-shadow: 0 .1em var(--lighter-grey);
@@ -56,12 +57,34 @@ p {
     -webkit-transition: all .2s ease-in;
     transition: all .2s ease-in;
 
-    color: rgba(255, 255, 255, 0.582);
     margin: 0 0;
-    font-size: 5em;
+    color: var(--chalkWhite);
+    font-size: 7em;
     text-align: center;
     line-height: 1.5em;
     letter-spacing: .2em;
+}
+
+#chalk-box {
+    position:fixed;
+    bottom:90px;
+    right: 145px;
+
+    height: 110px;
+    width: 160px;
+    border: dashed var(--grey) 2px ;
+    border-radius: 1em;
+}
+
+#chalk-box:hover {
+    cursor: pointer;
+
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+    
+    border: dashed var(--chalkWhite) 3px ;
 }
 
 .hidden {
