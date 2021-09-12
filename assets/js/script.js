@@ -39,24 +39,49 @@ const originalList = [
     "Zaymon Gonzalez",
 ]
 
+const previouslySelectedOl = document.querySelector('#previously-selected ol')
 const nameContainer = document.getElementById('name-container')
 const p1 = document.getElementById('p1')
 const p2 = document.getElementById('p2')
 const chalkBox = document.getElementById('chalk-box')
 let processingNextStudent = false
-// const toggleButtonDisabled = () => (
-//     chalkBox.hasAttribute('disabled')
-//         ? chalkBox.removeAttribute('disabled')
-//         : chalkBox.setAttribute('disabled', true)
-// )
-const getStugents = () => JSON.parse(localStorage.getItem('studentsList'))
-const setStudents = (studentsArr) => localStorage.setItem('studentsList', JSON.stringify(studentsArr))
-const getCurrentStudent = () => localStorage.getItem('currentStudent')
-const setCurrentStudent = (student) => localStorage.setItem('currentStudent', student)
+let idx = 0
 
-const updateStudentsArr = (studentToRemove, allStudents) => {
+
+const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
+const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
+const getPreviouslySelectedStudent = () => {
+    const arr = getPreviousStudents()
+    return {
+        idx: arr.length - 1,
+        student: arr.pop()
+    }
+}
+
+
+const getRemainingStudents = () => JSON.parse(localStorage.getItem('remainginStudentsList'))
+const setRemainingStudents = (studentsArr) => localStorage.setItem('remainginStudentsList', JSON.stringify(studentsArr))
+
+const resetPreviousStudents = () => {
+    previouslySelectedOl.innerHTML = ''
+    setPreviousStudents([])
+}
+
+const updateRemainingStudentsArr = (studentToRemove, allStudents) => {
     allStudents.splice(allStudents.indexOf(studentToRemove), 1)
-    setStudents(allStudents.length > 0 ? allStudents : originalList)
+    setRemainingStudents(allStudents.length > 0 ? allStudents : originalList)
+}
+
+const updatePreviousStudentsArr = (selectedStudent) => {
+    if (!selectedStudent) return
+    const previousStudents = getPreviousStudents() || []
+    if (previousStudents.length === originalList.length) {
+        console.log(previousStudents.length, originalList.length)
+        resetPreviousStudents()
+        return
+    }
+    previousStudents.push(selectedStudent)
+    setPreviousStudents(previousStudents)
 }
 
 const addClassFadeOut = (element) = () => element.classList.add('fade-out')
@@ -78,6 +103,7 @@ const hideCurrentName = () => {
 }
 
 const displayNewName = (name) => {
+    if (!name) return
     const nameArr = name.split(' ')
 
     const displaySingleName = (element, name) => {
@@ -92,7 +118,7 @@ const displayNewName = (name) => {
     setTimeout(() => processingNextStudent = false, 500)
 }
 
-const handleDisplayProcess = (student) => {
+const handleDisplayChosenStudent = (student) => {
     const _student = student
 
     if (p1.textContent) {
@@ -103,21 +129,50 @@ const handleDisplayProcess = (student) => {
     displayNewName(student)
 }
 
+const addSelectedStudentToDOM = (student, idx) => {
+    const liEl = document.createElement('li')
+    const spanEl = document.createElement('span')
+    const pEl = document.createElement('p')
+    spanEl.textContent = idx + '.'
+    liEl.classList.add('fade-in')
+    pEl.classList.add('student')
+    pEl.textContent = student
+    liEl.append(spanEl)
+    liEl.append(pEl)
+    previouslySelectedOl.append(liEl)
+}
+
+const buildPreviousStudentsList = () => {
+    previouslySelectedOl.innerHTML = ''
+    const students = getPreviousStudents() || []
+    students.map((student, idx) => addSelectedStudentToDOM(student, idx))
+}
+
+const handleDisplayPreviousStudents = () => {
+    if (!(p1.textContent)) return
+    const x = getPreviouslySelectedStudent()
+    if (x.idx === -1) return
+    addSelectedStudentToDOM(x.student, x.idx)
+}
+
 const pickRandomStudent = () => {
     if (processingNextStudent) return
     processingNextStudent = true
 
-    const students = getStugents() || originalList
-    const randomStudent = students[Math.floor(Math.random() * students.length)]
+    const students = getRemainingStudents() || [...originalList]
+    if (students.length === originalList.length) resetPreviousStudents()
 
-    handleDisplayProcess(randomStudent)
-    setCurrentStudent(randomStudent)
-    updateStudentsArr(randomStudent, students)
+    const chosenStudent = students[Math.floor(Math.random() * students.length)]
+
+    handleDisplayPreviousStudents()
+    handleDisplayChosenStudent(chosenStudent)
+    updatePreviousStudentsArr(chosenStudent)
+    updateRemainingStudentsArr(chosenStudent, students)
 }
 
 const init = () => {
+    buildPreviousStudentsList()
     setTimeout(() => chalkBox.classList.remove('hidden'), 1000)
-    handleDisplayProcess(getCurrentStudent())
 }
 
 chalkBox.addEventListener('click', pickRandomStudent)

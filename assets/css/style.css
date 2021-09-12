@@ -3,10 +3,6 @@
 }
 
 body {
-    font-family: 'dk_cool_crayonregular'
-}
-
-#chalk-board {
     background-image: url('../images/chalkboard.jpeg');
     height: 100vh;
     background-position: right bottom;
@@ -14,6 +10,41 @@ body {
     background-repeat: no-repeat;
     background-color: rgba(128, 128, 128, 0.507);
 
+    font-family: 'dk_cool_crayonregular';
+    color: var(--chalkWhite);
+}
+
+#erase-board {
+    position: absolute;
+    top: 2vh;
+    right:2vw;
+}
+
+#erase-board:hover {
+    color:red;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#previously-selected {
+    margin: 1vh 0;
+    height: 98vh;
+    width:22vw;
+    
+    overflow: scroll;
+    z-index: 1;
+}
+
+#previously-selected li {
+    margin-left: .5em;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+}
+
+#previously-selected li p {
+
+    text-decoration: line-through;
 }
 
 #name-container {
@@ -23,7 +54,7 @@ body {
     transform:  translateX(50%);
 }
 
-p {
+#p1, #p2 {
     -moz-transition: all .2s ease-in;
     -o-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;
@@ -45,10 +76,10 @@ p {
     height: 25vh;
     width: 25vw;
     border-radius: 1em;
-    border: dashed var(--chalkWhite) 10px ;
 }
 #chalk-box:hover {
     cursor: pointer;
+    border: dashed var(--chalkWhite) 10px ;
 }
 
 .hidden {
