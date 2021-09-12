@@ -14,17 +14,6 @@ body {
     color: var(--chalkWhite);
 }
 
-#erase-board {
-    position: absolute;
-    top: 2vh;
-    right:2vw;
-}
-
-#erase-board:hover {
-    color:red;
-    font-size: 1.1em;
-    cursor: pointer;
-}
 
 #previously-selected {
     margin: 1vh 0;
@@ -43,7 +32,7 @@ body {
 }
 
 #previously-selected li p {
-
+line-height: 1.2em;
     text-decoration: line-through;
 }
 
@@ -82,8 +71,53 @@ body {
     border: dashed var(--chalkWhite) 10px ;
 }
 
+
+#erase-board {
+    position: absolute;
+    top: 2vh;
+    right:2vw;
+}
+
+#erase-board:hover {
+    color:red;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+#erase-board-modal {
+    position: absolute;
+    top:40%;
+    left: 35%;
+    transform: translateX(50%);
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 20vh;
+    min-width: 20vw;
+    padding:1em;
+
+    border-radius: 1em;
+    background-color: var(--chalkWhite);
+}
+
+#erase-board-modal p {
+    display: inline;
+    margin: 0 1em;
+    font-size: 4em;
+}
+#erase-board-modal p:hover {
+    cursor: pointer;
+    color: red;
+}
+#erase-board-modal h2 {
+    font-size: 2rem;
+}
+
 .hidden {
-    display:none;
+    display: none !important;
 }
 
 /* https://stackoverflow.com/questions/23549967/css-3-filter-blur-not-using-transition-duration */
