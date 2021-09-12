@@ -123,7 +123,6 @@ const eraseCurrentName = () => {
 }
 
 const updateDisplayedCount = (num) => {
-
     studentCount.innerText = `: ${num} of ${originalList.length}`
 }
 
