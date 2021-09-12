@@ -42,8 +42,9 @@ const eraseButton = document.getElementById('erase-board')
 const eraseModal = document.getElementById('erase-board-modal')
 const eraseConfirm = document.getElementById('erase-confirm')
 const eraseDeny = document.getElementById('erase-deny')
+const studentCount = document.getElementById('student-count')
 
-const previouslySelectedOl = document.querySelector('#previously-selected ol')
+const previouslySelectedOl = document.getElementById('previously-selected')
 const nameContainer = document.getElementById('name-container')
 const p1 = document.getElementById('p1')
 const p2 = document.getElementById('p2')
@@ -59,20 +60,38 @@ const toggleModalDisplay = () => {
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
 const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
+const getNumberOfPreviousStudents = () => getPreviousStudents().length
 const getPreviouslySelectedStudent = () => {
     const arr = getPreviousStudents()
     return {
-        idx: arr.length - 1,
+        idx: arr.length,
         student: arr.pop()
     }
 }
 
-
 const getRemainingStudents = () => JSON.parse(localStorage.getItem('remainginStudentsList'))
 const setRemainingStudents = (studentsArr) => localStorage.setItem('remainginStudentsList', JSON.stringify(studentsArr))
+const addClassFadeOut = (element) = () => element.classList.add('fade-out')
+const removeClassFadeOut = (element) => element.classList.remove('fade-out')
+
+const addClassFadeIn = (element) = () => element.classList.add('fade-in')
+const removeClassFadeIn = (element) => element.classList.remove('fade-in')
+const setTextContent = (element, text) => element.textContent = text
+
 
 const resetPreviousStudents = () => {
-    previouslySelectedOl.innerHTML = ''
+
+    let idx = previouslySelectedOl.childNodes.length - 1
+    let removePreviousStudentsInterval
+
+    removePreviousStudentsInterval = setInterval(() => {
+        const ol = document.getElementById('previously-selected')
+        const node = ol.childNodes[idx]
+        node.classList.add('fade-out')
+        setTimeout(() => ol.removeChild(node), 1000)
+        idx--
+        if (idx < 0) clearInterval(removePreviousStudentsInterval)
+    }, 200)
     setPreviousStudents([])
 }
 
@@ -85,7 +104,6 @@ const updatePreviousStudentsArr = (selectedStudent) => {
     if (!selectedStudent) return
     const previousStudents = getPreviousStudents() || []
     if (previousStudents.length === originalList.length) {
-        console.log(previousStudents.length, originalList.length)
         resetPreviousStudents()
         return
     }
@@ -93,13 +111,6 @@ const updatePreviousStudentsArr = (selectedStudent) => {
     setPreviousStudents(previousStudents)
 }
 
-const addClassFadeOut = (element) = () => element.classList.add('fade-out')
-const removeClassFadeOut = (element) => element.classList.remove('fade-out')
-
-const addClassFadeIn = (element) = () => element.classList.add('fade-in')
-const removeClassFadeIn = (element) => element.classList.remove('fade-in')
-
-const setTextContent = (element, text) => element.textContent = text
 
 const eraseCurrentName = () => {
     nameContainer.classList.add('fade-out')
@@ -109,6 +120,11 @@ const eraseCurrentName = () => {
         setTextContent(p2, '')
         removeClassFadeOut(nameContainer)
     }, 900)
+}
+
+const updateDisplayedCount = (num) => {
+
+    studentCount.innerText = `: ${num} of ${originalList.length}`
 }
 
 const displayNewName = (name) => {
@@ -123,8 +139,7 @@ const displayNewName = (name) => {
 
     displaySingleName(p1, nameArr[0])
     setTimeout(() => displaySingleName(p2, nameArr[1]), 500)
-
-    setTimeout(() => processingNextStudent = false, 500)
+    setTimeout(() => { processingNextStudent = false }, 500)
 }
 
 const handleDisplayChosenStudent = (student) => {
@@ -139,6 +154,7 @@ const handleDisplayChosenStudent = (student) => {
 }
 
 const addSelectedStudentToDOM = (student, idx) => {
+    if (idx === 0) return
     const liEl = document.createElement('li')
     const spanEl = document.createElement('span')
     const pEl = document.createElement('p')
@@ -149,12 +165,22 @@ const addSelectedStudentToDOM = (student, idx) => {
     liEl.append(spanEl)
     liEl.append(pEl)
     previouslySelectedOl.append(liEl)
+    setTimeout(() => removeClassFadeIn(liEl), 1000)
 }
 
 const buildPreviousStudentsList = () => {
+    let delayedDisplayInterval
     previouslySelectedOl.innerHTML = ''
     const students = getPreviousStudents() || []
-    students.map((student, idx) => addSelectedStudentToDOM(student, idx))
+    let idx = 0
+
+    // students.map((student, idx) => setTimeout(() => addSelectedStudentToDOM(student, idx + 1), 100))
+    delayedDisplayInterval = setInterval(() => {
+        addSelectedStudentToDOM(students[idx], idx + 1)
+        idx++
+        if (idx === students.length) clearInterval(delayedDisplayInterval)
+    }, 200)
+    updateDisplayedCount(getPreviouslySelectedStudent().idx)
 }
 
 const handleDisplayPreviousStudents = () => {
@@ -177,14 +203,15 @@ const pickRandomStudent = () => {
     handleDisplayChosenStudent(chosenStudent)
     updatePreviousStudentsArr(chosenStudent)
     updateRemainingStudentsArr(chosenStudent, students)
+    setTimeout(() => updateDisplayedCount(getPreviouslySelectedStudent().idx), 2000)
 }
-
 
 const clearLocalStorage = () => {
     localStorage.removeItem('remainginStudentsList')
     resetPreviousStudents()
     toggleModalDisplay()
     eraseCurrentName()
+    updateDisplayedCount('-')
 }
 
 const init = () => {
@@ -192,9 +219,10 @@ const init = () => {
     setTimeout(() => chalkBox.classList.remove('hidden'), 1000)
 }
 
-
 chalkBox.addEventListener('click', pickRandomStudent)
 eraseButton.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
 eraseDeny.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
 eraseConfirm.addEventListener('click', clearLocalStorage)
-init()
+document.addEventListener('keyup', (e) => e.code === 'Space' && pickRandomStudent())
+
+getNumberOfPreviousStudents() && init()
