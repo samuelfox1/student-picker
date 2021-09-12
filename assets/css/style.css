@@ -3,13 +3,17 @@
 }
 
 body {
+    font-family: 'dk_cool_crayonregular'
+}
+
+#chalk-board {
     background-image: url('../images/chalkboard.jpeg');
     height: 100vh;
-    background-position: right;
+    background-position: right bottom;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: rgba(128, 128, 128, 0.507);
-    font-family: 'dk_cool_crayonregular'
+
 }
 
 #name-container {
@@ -35,16 +39,16 @@ p {
 
 #chalk-box {
     position:fixed;
-    bottom:85px;
-    right: 140px;
+    bottom:7vh;
+    right: 5vw;
 
-    height: 110px;
-    width: 160px;
+    height: 25vh;
+    width: 25vw;
     border-radius: 1em;
+    border: dashed var(--chalkWhite) 10px ;
 }
 #chalk-box:hover {
     cursor: pointer;
-    border: solid var(--chalkWhite) 10px ;
 }
 
 .hidden {
@@ -60,6 +64,7 @@ p {
     -moz-transition: 20s -moz-filter linear;
     -o-transition: 20s -o-filter linear;
     transition: 20s filter linear;
+    background-color: var(--chalkWhite);
 }
 
 /* https://stackoverflow.com/questions/11660710/css-transition-fade-in */
