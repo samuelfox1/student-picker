@@ -14,20 +14,37 @@ body {
     color: var(--chalkWhite);
 }
 
-/* #chalk-board {
-    z-index: -1;
-} */
+#erase-board {
+    position: absolute;
+    top: 2vh;
+    right:2vw;
+}
 
-#already-selected {
-    height: 90vh;
-    width:20vw;
+#erase-board:hover {
+    color:red;
+    font-size: 1.1em;
+    cursor: pointer;
+}
 
-    text-align: center;
-    text-decoration: line-through;
-    font-size: 1.5em;
-
-    border: solid var(--chalkWhite) 1px;
+#previously-selected {
+    margin: 1vh 0;
+    height: 98vh;
+    width:22vw;
+    
+    overflow: scroll;
     z-index: 1;
+}
+
+#previously-selected li {
+    margin-left: .5em;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+}
+
+#previously-selected li p {
+
+    text-decoration: line-through;
 }
 
 #name-container {
@@ -59,10 +76,10 @@ body {
     height: 25vh;
     width: 25vw;
     border-radius: 1em;
-    border: dashed var(--chalkWhite) 10px ;
 }
 #chalk-box:hover {
     cursor: pointer;
+    border: dashed var(--chalkWhite) 10px ;
 }
 
 .hidden {
