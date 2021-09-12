@@ -1,5 +1,7 @@
 :root {
     --chalkWhite: rgba(255, 255, 255, 0.582);
+    --chalkLite: rgba(255, 255, 255, 0.123);
+    --red:  rgba(255, 44, 44, 0.918);
 }
 
 body {
@@ -38,7 +40,7 @@ line-height: 1.2em;
 
 #name-container {
     position: fixed;
-    top: 20%;
+    top: 15%;
     right: 50%;
     transform:  translateX(50%);
 }
@@ -79,7 +81,7 @@ line-height: 1.2em;
 }
 
 #erase-board:hover {
-    color:red;
+    color:var(--red);
     font-size: 1.1em;
     cursor: pointer;
 }
@@ -99,8 +101,9 @@ line-height: 1.2em;
     min-width: 20vw;
     padding:1em;
 
+    border: dashed var(--red) 2px ;
     border-radius: 1em;
-    background-color: var(--chalkWhite);
+    background-color: var(--chalkLite);
 }
 
 #erase-board-modal p {
@@ -110,7 +113,7 @@ line-height: 1.2em;
 }
 #erase-board-modal p:hover {
     cursor: pointer;
-    color: red;
+    color: var(--red);
 }
 #erase-board-modal h2 {
     font-size: 2rem;
