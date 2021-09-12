@@ -44,12 +44,10 @@ const p1 = document.getElementById('p1')
 const p2 = document.getElementById('p2')
 const chalkBox = document.getElementById('chalk-box')
 let processingNextStudent = false
-// const toggleButtonDisabled = () => (
-//     chalkBox.hasAttribute('disabled')
-//         ? chalkBox.removeAttribute('disabled')
-//         : chalkBox.setAttribute('disabled', true)
-// )
-const getStugents = () => JSON.parse(localStorage.getItem('studentsList'))
+
+
+
+const getStudents = () => JSON.parse(localStorage.getItem('studentsList'))
 const setStudents = (studentsArr) => localStorage.setItem('studentsList', JSON.stringify(studentsArr))
 const getCurrentStudent = () => localStorage.getItem('currentStudent')
 const setCurrentStudent = (student) => localStorage.setItem('currentStudent', student)
@@ -107,7 +105,7 @@ const pickRandomStudent = () => {
     if (processingNextStudent) return
     processingNextStudent = true
 
-    const students = getStugents() || originalList
+    const students = getStudents() || originalList
     const randomStudent = students[Math.floor(Math.random() * students.length)]
 
     handleDisplayProcess(randomStudent)
