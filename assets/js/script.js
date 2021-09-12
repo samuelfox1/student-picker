@@ -62,8 +62,6 @@ const getPreviouslySelectedStudent = () => {
 const getRemainingStudents = () => JSON.parse(localStorage.getItem('remainginStudentsList'))
 const setRemainingStudents = (studentsArr) => localStorage.setItem('remainginStudentsList', JSON.stringify(studentsArr))
 
-// const getCurrentStudent = () => localStorage.getItem('currentStudent')
-// const setCurrentStudent = (student) => localStorage.setItem('currentStudent', student)
 const resetPreviousStudents = () => {
     previouslySelectedOl.innerHTML = ''
     setPreviousStudents([])
@@ -156,15 +154,6 @@ const handleDisplayPreviousStudents = () => {
     if (x.idx === -1) return
     addSelectedStudentToDOM(x.student, x.idx)
 }
-
-// page loads and all selected students are displayed, no current student is displayed
-
-// click to select new student
-// slection is made and displayed to screen
-// selection is also added to selected state
-// selection is removed from remaining state
-// 
-
 
 const pickRandomStudent = () => {
     if (processingNextStudent) return
