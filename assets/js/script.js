@@ -1,21 +1,27 @@
 const originalList = [
-    "Bagavathi perumal",
+    "Bagavathi Pillai",
     "Blaine Donovan",
     "Caitlyn Kidd",
     "Calvin Swomley",
     "Cameron Castor",
     "Carson Colgate",
+    "Colleen Fimister",
     "Desai Siddharth",
+    "Eric Martin",
     "Florencia Ceballos",
     "Hannah Franz",
     "Irvin Ruiz",
+    "Jack McNary",
     "Jackson Barker",
     "Jesse Draper",
+    "Jessica Budd",
     "Jessica Kasper",
     "Joana Santoyo",
     "John Gallagher",
     "Jonathan Jackson",
     "Jose Yanez",
+    "Katlyn Boches",
+    "Laurel Thorburn",
     "Lucas Despain",
     "Madeline Donley",
     "Mariana Davie",
@@ -33,25 +39,87 @@ const originalList = [
     "Zaymon Gonzalez",
 ]
 
-const h2 = document.querySelector('h2')
+const nameContainer = document.getElementById('name-container')
+const p1 = document.getElementById('p1')
+const p2 = document.getElementById('p2')
 const button = document.querySelector('button')
-
+let processingNextStudent = false
+// const toggleButtonDisabled = () => (
+//     button.hasAttribute('disabled')
+//         ? button.removeAttribute('disabled')
+//         : button.setAttribute('disabled', true)
+// )
 const getStugents = () => JSON.parse(localStorage.getItem('studentsList'))
 const setStudents = (studentsArr) => localStorage.setItem('studentsList', JSON.stringify(studentsArr))
+const getCurrentStudent = () => localStorage.getItem('currentStudent')
+const setCurrentStudent = (student) => localStorage.setItem('currentStudent', student)
 
-const updateStudents = (studentToRemove, allStudents) => {
-    const indexOfStudent = allStudents.indexOf(studentToRemove)
-    allStudents.splice(indexOfStudent, 1)
+const updateStudentsArr = (studentToRemove, allStudents) => {
+    allStudents.splice(allStudents.indexOf(studentToRemove), 1)
     setStudents(allStudents.length > 0 ? allStudents : originalList)
 }
 
-const pickRandomStudent = () => {
-    const students = getStugents() || originalList
-    const randomNum = Math.floor(Math.random() * students.length)
-    const randomStudent = students[randomNum]
+const addClassFadeOut = (element) = () => element.classList.add('fade-out')
+const removeClassFadeOut = (element) => element.classList.remove('fade-out')
 
-    h2.innerText = randomStudent
-    updateStudents(randomStudent, students)
+const addClassFadeIn = (element) = () => element.classList.add('fade-in')
+const removeClassFadeIn = (element) => element.classList.remove('fade-in')
+
+const setTextContent = (element, text) => element.textContent = text
+
+const hideCurrentName = () => {
+    nameContainer.classList.add('fade-out')
+
+    setTimeout(() => {
+        setTextContent(p1, '')
+        setTextContent(p2, '')
+        removeClassFadeOut(nameContainer)
+    }, 900)
+}
+
+const displayNewName = (name) => {
+    const nameArr = name.split(' ')
+
+    const displaySingleName = (element, name) => {
+        element.classList.add('fade-in')
+        element.textContent = name
+        setTimeout(() => removeClassFadeIn(element), 1000)
+    }
+
+    displaySingleName(p1, nameArr[0])
+    setTimeout(() => displaySingleName(p2, nameArr[1]), 500)
+
+    setTimeout(() => processingNextStudent = false, 500)
+}
+
+const handleDisplayProcess = (student) => {
+    const _student = student
+
+    if (p1.textContent) {
+        hideCurrentName()
+        setTimeout(() => displayNewName(_student), 1000)
+        return
+    }
+    displayNewName(student)
+}
+
+const pickRandomStudent = () => {
+    if (processingNextStudent) return
+    processingNextStudent = true
+
+    const students = getStugents() || originalList
+    const randomStudent = students[Math.floor(Math.random() * students.length)]
+
+    handleDisplayProcess(randomStudent)
+    setCurrentStudent(randomStudent)
+    updateStudentsArr(randomStudent, students)
+}
+
+const init = () => {
+    setTimeout(() => button.classList.remove('hidden'), 1000)
+    handleDisplayProcess(getCurrentStudent())
 }
 
 button.addEventListener('click', pickRandomStudent)
+
+init()
