@@ -1,9 +1,6 @@
 :root {
-    --grey:rgba(128, 128, 128, 0.507);
-    --lighter-grey: rgba(128, 128, 128, 0.301);
     --chalkWhite: rgba(255, 255, 255, 0.582);
 }
-
 
 body {
     background-image: url('../images/chalkboard.jpeg');
@@ -11,37 +8,8 @@ body {
     background-position: right;
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: rgba(0, 0, 0, 0.233);
+    background-color: rgba(128, 128, 128, 0.507);
     font-family: 'dk_cool_crayonregular'
-}
-
-button {
-    background-color: rgba(0, 0, 0, 0.233);
-    -moz-transition: all .2s ease-in;
-    -o-transition: all .2s ease-in;
-    -webkit-transition: all .2s ease-in;
-    transition: all .2s ease-in;
-
-    position: fixed;
-    bottom: 30%;
-    right: 50%;
-    transform:  translateX(50%);
-    padding:0 .75em;
-
-    font-size: 3em;
-    font-family: inherit;
-    color: var(--grey);
-
-    border: 1px solid var(--grey);
-    border-radius: 1em ;
-}
-button:hover {
-    cursor: pointer;
-    font-size: 3.1em;
-    color: var(--chalkWhite);
-    border: 1px solid black;
-
-    box-shadow: 0 .1em var(--lighter-grey);
 }
 
 #name-container {
@@ -67,30 +35,34 @@ p {
 
 #chalk-box {
     position:fixed;
-    bottom:90px;
-    right: 145px;
+    bottom:85px;
+    right: 140px;
 
     height: 110px;
     width: 160px;
-    border: dashed var(--grey) 2px ;
     border-radius: 1em;
 }
-
 #chalk-box:hover {
     cursor: pointer;
-
-    -moz-transition: all .2s ease-in;
-    -o-transition: all .2s ease-in;
-    -webkit-transition: all .2s ease-in;
-    transition: all .2s ease-in;
-    
-    border: dashed var(--chalkWhite) 3px ;
+    border: solid var(--chalkWhite) 10px ;
 }
 
 .hidden {
     display:none;
 }
 
+/* https://stackoverflow.com/questions/23549967/css-3-filter-blur-not-using-transition-duration */
+.blurred {
+    -webkit-filter: blur(30px); -moz-filter: blur(30px);
+    -o-filter: blur(30px); -ms-filter: blur(30px); 
+    filter: url(#blur); filter: blur(30px);  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+    -webkit-transition: 20s -webkit-filter linear;
+    -moz-transition: 20s -moz-filter linear;
+    -o-transition: 20s -o-filter linear;
+    transition: 20s filter linear;
+}
+
+/* https://stackoverflow.com/questions/11660710/css-transition-fade-in */
 .fade-in {
 	opacity: 1;
 	animation-name: fadeInOpacity;
