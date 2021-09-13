@@ -6,7 +6,7 @@
 
 body {
     background-image: url('../images/chalkboard.jpeg');
-    height: 99vh;
+    height: 100vh;
     background-position: right bottom;
     background-size: cover;
     background-repeat: no-repeat;
@@ -17,7 +17,8 @@ body {
 }
 
 #previous-student-window {
-    height: 30vh;
+    /* height: 30vh; */
+    height: 160px;
     width:85vw;
     
     background-color: var(--chalkLite);
@@ -33,8 +34,8 @@ body {
     align-items: flex-start;
     justify-content: flex-start;
     flex-wrap: wrap;
-    margin-top: .5em;
-    height: 30vh;
+    margin-top: 10px;
+    height: 150px;
     width:20vw;
     /* border: dashed red 1px; */
 }
@@ -76,17 +77,34 @@ line-height: 1.2em;
 
 #utility {
     position: absolute;
-    top: 2vh;
-    right:2vw;
-    height:7vh;
+    top: 15px;
+    right: 25px;
+
+    height: 145px;
+    /* border: dashed red 1px; */
  }
 
  #student-count-container {
      position: absolute;
      right:0;
-     bottom:0;
-     display: flex;
-     justify-content: space-between;
+     bottom: 70px;
+     /* display: flex; */
+     /* justify-content: space-between; */
+ }
+
+ #student-count {
+     text-align: end;
+ }
+
+ #time-container {
+    text-align: end;
+    position: absolute;
+    right:0;
+    bottom: 0;
+ }
+
+ #time-container p {
+     margin-top:5px
  }
 
 

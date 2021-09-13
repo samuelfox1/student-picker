@@ -38,25 +38,25 @@ const originalList = [
     "Zachary Elliott",
     "Zaymon Gonzalez",
 ]
-const eraseButton = document.getElementById('erase-board')
-const eraseModal = document.getElementById('erase-board-modal')
-const eraseConfirm = document.getElementById('erase-confirm')
-const eraseDeny = document.getElementById('erase-deny')
-const studentCount = document.getElementById('student-count')
+const eraseBtn = document.getElementById('erase-board')
+const eraseModalEl = document.getElementById('erase-board-modal')
+const eraseConfirmEl = document.getElementById('erase-confirm')
+const eraseDenyEl = document.getElementById('erase-deny')
+const studentCountEl = document.getElementById('student-count')
+const dateEl = document.getElementById('date')
+const timeEl = document.getElementById('time')
 
 const previouslySelectedOl = document.getElementById('previously-selected')
 const nameContainer = document.getElementById('name-container')
 const p1 = document.getElementById('p1')
 const p2 = document.getElementById('p2')
 const chalkBox = document.getElementById('chalk-box')
+const instructions = document.getElementById('instructions')
+
 let processingNextStudent = false
+let displayedMinute
 let idx = 0
 
-
-const toggleModalDisplay = () => {
-    eraseModal.classList.toggle('hidden')
-    nameContainer.classList.toggle('hidden')
-}
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
 const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
@@ -76,7 +76,13 @@ const removeClassFadeOut = (element) => element.classList.remove('fade-out')
 
 const addClassFadeIn = (element) = () => element.classList.add('fade-in')
 const removeClassFadeIn = (element) => element.classList.remove('fade-in')
+const toggleClassHidden = (element) => element.classList.toggle('hidden')
 const setTextContent = (element, text) => element.textContent = text
+
+const toggleModalDisplay = () => {
+    toggleClassHidden(eraseModalEl)
+    toggleClassHidden(nameContainer)
+}
 
 
 const resetPreviousStudents = () => {
@@ -86,9 +92,9 @@ const resetPreviousStudents = () => {
 
     removePreviousStudentsInterval = setInterval(() => {
         const ol = document.getElementById('previously-selected')
-        const node = ol.childNodes[idx]
-        node.classList.add('fade-out')
-        setTimeout(() => ol.removeChild(node), 1000)
+        const node = ol?.childNodes[idx]
+        node?.classList.add('fade-out')
+        setTimeout(() => ol?.removeChild(node), 1000)
         idx--
         if (idx < 0) clearInterval(removePreviousStudentsInterval)
     }, 200)
@@ -123,7 +129,7 @@ const eraseCurrentName = () => {
 }
 
 const updateDisplayedCount = (num) => {
-    studentCount.innerText = `: ${num} of ${originalList.length}`
+    studentCountEl.innerText = `${num} of ${originalList.length}`
 }
 
 const displayNewName = (name) => {
@@ -213,15 +219,55 @@ const clearLocalStorage = () => {
     updateDisplayedCount('-')
 }
 
+const handleDay = (date) => {
+    const formattedDay = `${date.getMonth()} / ${date.getDate()} / ${`${date.getFullYear()}`.substring(2, 4)}`
+    dateEl.innerText = formattedDay
+}
+const formatMinute = (min) => min <= 10 ? `0${min}` : min
+
+const handleTime = (date) => {
+    let amPm = 'am'
+    let hour = date.getHours()
+    if (hour >= 12) {
+        amPm = 'pm'
+        hour -= 12
+    }
+    if (hour === 0) hour = 12
+
+    const min = formatMinute(date.getMinutes())
+    const formattedTime = `${hour}: ${min} ${amPm}`
+
+    timeEl.innerText = formattedTime
+    displayedMinute = min
+    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
+}
+
+const updateDateTime = (date) => {
+    handleDay(date)
+    handleTime(date)
+}
+
+const checkDateTime = () => {
+    const date = new Date()
+    if (displayedMinute === formatMinute(date.getMinutes())) return
+    console.log('updating minutes')
+    updateDateTime(date)
+}
+
 const init = () => {
     buildPreviousStudentsList()
     setTimeout(() => chalkBox.classList.remove('hidden'), 1000)
 }
 
 chalkBox.addEventListener('click', pickRandomStudent)
-eraseButton.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
-eraseDeny.addEventListener('click', () => toggleModalDisplay(eraseModal, 'hidden'))
-eraseConfirm.addEventListener('click', clearLocalStorage)
+eraseBtn.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
+eraseDenyEl.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
+eraseConfirmEl.addEventListener('click', clearLocalStorage)
 document.addEventListener('keyup', (e) => e.code === 'Space' && pickRandomStudent())
 
+setInterval(checkDateTime, 1000)
+setTimeout(() => {
+    instructions.classList.add('fade-out')
+    setTimeout(() => toggleClassHidden(instructions), 1000)
+}, 5000)
 getNumberOfPreviousStudents() && init()
