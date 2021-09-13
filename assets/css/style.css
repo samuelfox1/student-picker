@@ -87,7 +87,7 @@ line-height: 1.2em;
  #student-count-container {
      position: absolute;
      right:0;
-     bottom: 75px;
+     bottom: 85px;
      /* display: flex; */
      /* justify-content: space-between; */
  }
@@ -106,7 +106,8 @@ line-height: 1.2em;
  #time-container p {
      margin-top:5px
  }
- #location {
+
+ .font-small {
      font-size: .5em;
  }
 

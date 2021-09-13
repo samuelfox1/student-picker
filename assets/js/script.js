@@ -46,9 +46,9 @@ const studentCountEl = document.getElementById('student-count')
 const dateEl = document.getElementById('date')
 const timeEl = document.getElementById('time')
 const locationEl = document.getElementById('location')
+const hideLocationEl = document.getElementById('hide-location')
+const hideLocationLabelEl = document.getElementById('hide-location-label')
 
-const getLocation = () => Intl.DateTimeFormat().resolvedOptions().timeZone
-locationEl.innerText = getLocation().split('/').join(' - ').split('_').join(' ') || getLocation()
 
 const previouslySelectedOl = document.getElementById('previously-selected')
 const nameContainer = document.getElementById('name-container')
@@ -60,6 +60,9 @@ const instructions = document.getElementById('instructions')
 let processingNextStudent = false
 let displayedMinute
 let idx = 0
+
+const getLocation = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+const handleHideLocation = (e) => locationEl.textContent = !(e.target.checked) ? '- - -' : getLocation().split('/').join(' - ').split('_').join(' ') || getLocation()
 
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
@@ -87,7 +90,6 @@ const toggleModalDisplay = () => {
     toggleClassHidden(eraseModalEl)
     toggleClassHidden(nameContainer)
 }
-
 
 const resetPreviousStudents = () => {
 
@@ -268,6 +270,7 @@ chalkBox.addEventListener('click', pickRandomStudent)
 eraseBtn.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
 eraseDenyEl.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
 eraseConfirmEl.addEventListener('click', clearLocalStorage)
+hideLocationEl.addEventListener('click', (e) => handleHideLocation(e))
 document.addEventListener('keyup', (e) => e.code === 'Space' && pickRandomStudent())
 
 setInterval(checkDateTime, 1000)
