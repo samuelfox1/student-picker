@@ -45,6 +45,10 @@ const eraseDenyEl = document.getElementById('erase-deny')
 const studentCountEl = document.getElementById('student-count')
 const dateEl = document.getElementById('date')
 const timeEl = document.getElementById('time')
+const locationEl = document.getElementById('location')
+
+const getLocation = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+locationEl.innerText = getLocation().split('/').join(' - ').split('_').join(' ') || getLocation()
 
 const previouslySelectedOl = document.getElementById('previously-selected')
 const nameContainer = document.getElementById('name-container')
@@ -219,11 +223,13 @@ const clearLocalStorage = () => {
     updateDisplayedCount('-')
 }
 
-const handleDay = (date) => {
-    const formattedDay = `${date.getMonth()} / ${date.getDate()} / ${`${date.getFullYear()}`.substring(2, 4)}`
-    dateEl.innerText = formattedDay
-}
 const formatMinute = (min) => min <= 10 ? `0${min}` : min
+
+const handleDay = (date) => {
+    const day = Intl.DateTimeFormat().format().split('/')
+    day[2] = day[2].substring(2, 4)
+    dateEl.innerText = day.join(' / ')
+}
 
 const handleTime = (date) => {
     let amPm = 'am'
@@ -239,7 +245,6 @@ const handleTime = (date) => {
 
     timeEl.innerText = formattedTime
     displayedMinute = min
-    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 }
 
 const updateDateTime = (date) => {
