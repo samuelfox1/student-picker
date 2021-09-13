@@ -17,7 +17,6 @@ body {
 }
 
 #previous-student-window {
-    /* height: 30vh; */
     height: 160px;
     width:85vw;
     
@@ -37,7 +36,6 @@ body {
     margin-top: 10px;
     height: 150px;
     width:20vw;
-    /* border: dashed red 1px; */
 }
 
 #previously-selected li {
@@ -57,7 +55,6 @@ line-height: 1.2em;
     position: fixed;
     top: 40%;
     left : 10%;
-    /* transform:  translateX(-50%); */
 
 }
 
@@ -81,15 +78,12 @@ line-height: 1.2em;
     right: 15px;
 
     height: 150px;
-    /* border: dashed red 1px; */
  }
 
  #student-count-container {
      position: absolute;
      right:0;
      bottom: 85px;
-     /* display: flex; */
-     /* justify-content: space-between; */
  }
 
  #student-count {
@@ -168,7 +162,6 @@ line-height: 1.2em;
     position:absolute;
     bottom:4vh;
     right: 10vw;
-    /* border: red dashed 1px; */
 }
 
 .hidden {
