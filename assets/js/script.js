@@ -1,6 +1,5 @@
 const originalList = [
     "Bagavathi Pillai",
-    "Blaine Donovan",
     "Caitlyn Kidd",
     "Calvin Swomley",
     "Cameron Castor",
@@ -28,7 +27,6 @@ const originalList = [
     "Matt Thurber",
     "Matthew Robinette",
     "Nick Ross",
-    "Rachid Aderdour",
     "Ryan Mcculloch",
     "Ryan Paragas",
     "Sarah Ramirez",
@@ -38,6 +36,8 @@ const originalList = [
     "Zachary Elliott",
     "Zaymon Gonzalez",
 ]
+
+
 const eraseBtn = document.getElementById('erase-board')
 const eraseModalEl = document.getElementById('erase-board-modal')
 const eraseConfirmEl = document.getElementById('erase-confirm')
@@ -47,7 +47,6 @@ const dateEl = document.getElementById('date')
 const timeEl = document.getElementById('time')
 const locationEl = document.getElementById('location')
 const hideLocationEl = document.getElementById('hide-location')
-const hideLocationLabelEl = document.getElementById('hide-location-label')
 
 
 const previouslySelectedOl = document.getElementById('previously-selected')
@@ -63,7 +62,6 @@ let idx = 0
 
 const getLocation = () => Intl.DateTimeFormat().resolvedOptions().timeZone
 const handleHideLocation = (e) => locationEl.textContent = !(e.target.checked) ? '- - -' : getLocation().split('/').join(' - ').split('_').join(' ') || getLocation()
-
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
 const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
@@ -267,10 +265,13 @@ const init = () => {
 }
 
 chalkBox.addEventListener('click', pickRandomStudent)
+
+
 eraseBtn.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
 eraseDenyEl.addEventListener('click', () => toggleModalDisplay(eraseModalEl, 'hidden'))
 eraseConfirmEl.addEventListener('click', clearLocalStorage)
 hideLocationEl.addEventListener('click', (e) => handleHideLocation(e))
+
 document.addEventListener('keyup', (e) => e.code === 'Space' && pickRandomStudent())
 
 setInterval(checkDateTime, 1000)
@@ -278,4 +279,6 @@ setTimeout(() => {
     instructions.classList.add('fade-out')
     setTimeout(() => toggleClassHidden(instructions), 1000)
 }, 5000)
+
+
 getNumberOfPreviousStudents() && init()
