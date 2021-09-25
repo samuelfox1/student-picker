@@ -65,7 +65,7 @@ const handleHideLocation = (e) => locationEl.textContent = !(e.target.checked) ?
 
 const getPreviousStudents = () => JSON.parse(localStorage.getItem('previousStudentsList'))
 const setPreviousStudents = (studentsArr) => localStorage.setItem('previousStudentsList', JSON.stringify(studentsArr))
-const getNumberOfPreviousStudents = () => getPreviousStudents().length
+const getNumberOfPreviousStudents = () => getPreviousStudents()?.length
 const getPreviouslySelectedStudent = () => {
     const arr = getPreviousStudents()
     return {
@@ -255,7 +255,6 @@ const updateDateTime = (date) => {
 const checkDateTime = () => {
     const date = new Date()
     if (displayedMinute === formatMinute(date.getMinutes())) return
-    console.log('updating minutes')
     updateDateTime(date)
 }
 
